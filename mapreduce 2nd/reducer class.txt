@@ -1,0 +1,20 @@
+package doctorcategory;
+import java.io.IOException;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+public class DoctorcategoryReducer extends Reducer<Text, CustomMaxTuple, Text, CustomMaxTuple> {
+private CustomMaxTuple result = new CustomMaxTuple();
+public void reduce(Text key, Iterable<CustomMaxTuple> values, Context context)
+throws IOException, InterruptedException {
+
+result.setMax(null);
+
+for (CustomMaxTuple MaxCountTuple : values) {
+
+if (result.getMax() == null || (MaxCountTuple.getMax() > result.getMax())) {
+result.setMax(MaxCountTuple.getMax());
+}
+
+context.write(new Text(key.toString()), result);
+}
+}

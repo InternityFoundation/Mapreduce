@@ -1,0 +1,22 @@
+package doctorcategory;
+import java.io.IOException;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+public class DoctorcategoryMapper extends Mapper<Object, Text, Text, CustomMaxTuple> {
+private CustomMaxTuple outTuple = new CustomMaxTuple();
+private Text WellnessCentreName = new Text();
+
+public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+String data = value.toString();
+String[] category = data.split(",");
+double doctor = 0;
+
+if(category[5]>0)
+{
+doctor=Double.parseDouble(field[5]);
+outTuple.setMax(doctor);
+WellnessCentreName.set(category[2]);
+context.write(WellnessCentreName,OutTuple);
+}
+}
+}
