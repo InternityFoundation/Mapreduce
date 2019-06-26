@@ -13,7 +13,7 @@ double doctor = 0;
 
 if(category[5]>0)
 {
-doctor=Double.parseDouble(field[5]);
+doctor=Double.parseDouble(category[5]);
 outTuple.setMax(doctor);
 WellnessCentreName.set(category[2]);
 context.write(WellnessCentreName,OutTuple);
