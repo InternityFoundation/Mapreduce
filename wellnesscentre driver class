@@ -1,7 +1,13 @@
 package wellnessCentre;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import java.util.Iterator;
 
 public class WellnessCentreDriver {
 	public static void main(String[] args) {
@@ -37,9 +43,37 @@ public class WellnessCentreDriver {
 		        e.printStackTrace();
 		}
 		}
-		// TODO Auto-generated method stub
+		
 
 	}
+public class WellnessMapper extends MapReduceBase implements Mapper <LongWritable,Text,Text,IntWritable>
+{
+	
+	
+	public void map(LongWritable key, Text value, OutputCollector <Text, IntWritable> output ,  Reporter reporter)throws IOException
+	{
+		String str = value.toString();
+		String[] categorydata = str.split(",");
+		
+		output.collect(new Text(categorydata[6]), 1);
+	}
+
+} 
+public class WellnessReducer extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable>
+{
+	public void reduce(Text t_key, Iterator<IntWritable> values, OutputCollector<Text,IntWritable> output ,  Reporter reporter)throws IOException
+	{
+		Text key = t_key;
+		int freqofpro=0;
+		while(values.hasNext())
+		{
+		
+				IntWritable value = (IntWritable) values.next();
+				freqofpro += value.get();
+		}
+		output.collect(key,new IntWritable(freqofpro));
+	}
+}
 	
 
 }
