@@ -52,10 +52,12 @@ public class WellnessMapper extends MapReduceBase implements Mapper <LongWritabl
 	
 	public void map(LongWritable key, Text value, OutputCollector <Text, IntWritable> output ,  Reporter reporter)throws IOException
 	{
+	private final static IntWritable one = new IntWritable(1);
+
 		String str = value.toString();
 		String[] categorydata = str.split(",");
 		
-		output.collect(new Text(categorydata[6]), 1);
+		output.collect(new Text(categorydata[6]), one);
 	}
 
 } 
